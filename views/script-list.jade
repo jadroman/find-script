@@ -1,0 +1,20 @@
+﻿doctype html
+html
+	head
+		title naslov
+	body
+		p
+		a(href="insert_record/") dodaj
+		div
+			table(border="1")
+				thead
+					tr
+						th(colspan = "2") Posts
+				tbody
+					for script in scripts
+						tr
+							td 
+								=script.title
+							td
+								a(href="update_record/" + script._id) uredi
+								a(href="delete_record/" + script._id) briši

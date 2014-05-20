@@ -1,0 +1,15 @@
+doctype html
+html
+	head
+		title naslov
+	body 
+		div
+			form(method="post" action="/update_record")
+				input(type="hidden", name="id", value="#{results._id}")
+				label title
+				input(type="text", placeholder="script title", name="title", value="#{results.title}")
+				label author
+				input(type="text", placeholder="script author", name="author", value="#{results.author}")
+				label note
+				input(type="text", placeholder="note about script", name="note", value="#{results.note}")
+				button(type="submit") update
