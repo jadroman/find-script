@@ -1,0 +1,14 @@
+doctype html
+html
+	head
+		title naslov
+	body 
+		div
+			form(method="post" action="/insert_record")
+				label title
+				input(type="text", placeholder="script title", name="title")
+				label author
+				input(type="text", placeholder="script author", name="author")
+				label note
+				input(type="text", placeholder="note about script", name="note")
+				button(type="submit") insert

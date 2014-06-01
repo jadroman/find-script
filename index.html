@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+        <link rel="stylesheet" href="css/main.css">
+		<link rel="stylesheet" href="css/customMain.css">
+        <!-- Modernizr -->
+        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+        <!-- Respond.js for IE 8 or less only -->
+        <!--[if (lt IE 9) & (!IEMobile)]>
+            <script src="js/vendor/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <!--[if lte IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+
+        
+		<div role="navigation" class="navbar navbar-inverse navbar-fixed-top">
+		  <div class="container">
+			<div class="navbar-header">
+			  <button data-target=".navbar-collapse" data-toggle="collapse" class="navbar-toggle" type="button">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			  </button>
+			  <a href="#" class="navbar-brand">Project name</a>
+			</div>
+			<div class="navbar-collapse collapse">
+			<div class="navbar-form navbar-left">
+				<input type="text" placeholder="Search..." class="form-control">
+			</div>	
+			<form role="form" method="" action="" class="navbar-form navbar-right">
+				<div class="form-group">
+				  <input type="text" class="form-control" placeholder="Email">
+				</div>
+				<div class="form-group">
+				  <input type="password" class="form-control" placeholder="Password">
+				</div>
+				<button class="btn btn-success" type="submit">Sign in</button>
+			</form>
+			</div><!--/.navbar-collapse -->
+		  </div>
+		</div>
+        
+		
+        <div class="container">
+		  <!-- Example row of columns -->
+		  <div class="row mainContent" role="main">
+			<div class="col-md-12">
+			  <div>
+					<table border="1">
+						<thead>
+							<tr>
+								<th colspan = "2"> Posts</th>
+							</tr>
+						</thead>
+						<tbody>
+							<% scripts.forEach(function(script) { %>
+								<tr>
+									<td> 
+										<%= script.title %>
+									</td>
+									<td>
+										<a href="update_record/<%= script._id %>"> uredi</a>
+										<a href="delete_record/<%= script._id %>"> briši</a>
+									</td>
+								</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		  </div>
+
+		  <hr>
+
+		  <footer>
+			<p>&copy; Company 2014</p>
+		  </footer>
+		</div>
+
+
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+        <script src="js/plugins.js"></script>
+        <script src="js/main.js"></script>
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+            g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+            s.parentNode.insertBefore(g,s)}(document,'script'));
+        </script>
+    </body>
+</html>
