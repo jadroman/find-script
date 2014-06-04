@@ -5,6 +5,7 @@ var app = express();
 var http = require('http');
 var mongoose = require('mongoose');
 var ejs = require('ejs');
+var logError = require('./logErrors.js');
 
 var configDB = require('./config/database.js');
 mongoose.connect(configDB.url);
@@ -58,10 +59,11 @@ function badMiddleware(req, res, next) {
 	
   next(new Error('Bad middleware makes error'));
 }
-
+/*
 function logError(err, req, res, next) {
   
 	console.log("#################################################################");
 	res.send(500, 'Something broke!');
   
 }
+*/
