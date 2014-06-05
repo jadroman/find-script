@@ -483,7 +483,12 @@ module.exports = function (app, passport) {
 		res.redirect('/script-list');
 
 	});
-
+	
+	app.get('*', function(req, res){
+		
+		res.render('404.ejs', {});
+	});
+	
 };
 
 // route middleware to make sure a user is logged in

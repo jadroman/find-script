@@ -21,6 +21,6 @@ module.exports = function (err, req, res, next) {
 	//console.log(err.stack);
 	
     logger.error(err.stack);
-	res.send(500, 'Something broke!');
+	res.send(500, 'Server error!');
 
 };

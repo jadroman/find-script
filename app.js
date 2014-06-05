@@ -27,12 +27,12 @@ app.configure(function () {
 	app.use(flash()); // use connect-flash for flash messages stored in session
 	app.use(passport.initialize());
 	app.use(passport.session()); // persistent login sessions
-	app.use(app.router);
 	
 	app.use("/css", express.static(__dirname + '/css'));
 	app.use("/img", express.static(__dirname + '/img'));
 	app.use("/fonts", express.static(__dirname + '/fonts'));
 	app.use("/js", express.static(__dirname + '/js'));
+	app.use(app.router);
 	//app.use("/js/jquery-ui/js", express.static(__dirname + '/js/jquery-ui/js'));
 
 	
@@ -40,7 +40,7 @@ app.configure(function () {
 	app.set('view engine', 'ejs');
 	
 	app.use(logError)
-		
+	
 	app.locals.pretty = true;
 });
 
@@ -48,6 +48,7 @@ app.configure(function () {
 require('./config/passport')(passport); // pass passport for configuration
 
 require('./routes.js')(app, passport);
+
 
 http.createServer(app).listen(app.get('port'), function () {
 	console.log("Express server listening on port " + app.get('port'));
