@@ -1,5 +1,7 @@
 // config/passport.js
 
+var validator = require('validator')
+
 // load all the things we need
 var LocalStrategy   = require('passport-local').Strategy;
 
@@ -40,7 +42,7 @@ module.exports = function(passport) {
         passReqToCallback : true // allows us to pass back the entire request to the callback
     },
     function(req, username, password, done) {
-
+		
 		// find a user whose username is the same as the forms username
 		// we are checking to see if the user trying to login already exists
         User.findOne({ 'local.username' :  username }, function(err, user) {
@@ -86,10 +88,26 @@ module.exports = function(passport) {
         passReqToCallback : true // allows us to pass back the entire request to the callback
     },
     function(req, username, password, done) { // callback with username and password from our form
-
+		
+		// replace <, >, & and " with HTML entities.
+		var sanitizedUsername = validator.escape(username);
+		
+		// replace <, >, & and " with HTML entities.
+		var sanitizedPassword = validator.escape(password);
+		
+		//  check if the string's length is too big
+		if(!validator.isLength(sanitizedUsername, 1, 50)){
+			return done(null, false, req.flash('loginMessage', 'Username is too long.'));
+		}
+		
+		//  check if the string's length is too big
+		if(!validator.isLength(sanitizedPassword, 1, 50)){
+			return done(null, false, req.flash('loginMessage', 'Pasword is too long.'));
+		}
+		
         // find a user whose username is the same as the forms username
         // we are checking to see if the user trying to login already exists
-        User.findOne({ 'local.username' :  username }, function(err, user) {
+        User.findOne({ 'local.username' :  sanitizedUsername }, function(err, user) {
             // if there are any errors, return the error before anything else
             if (err)
                 return done(err);
@@ -100,7 +118,7 @@ module.exports = function(passport) {
 				
 			}
             // if the user is found but the password is wrong
-            if (!user.validPassword(password))
+            if (!user.validPassword(sanitizedPassword))
                 return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
 
             // all is well, return successful user

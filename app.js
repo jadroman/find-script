@@ -20,7 +20,7 @@ app.configure(function () {
 	app.use(express.cookieParser());
 	app.use(express.bodyParser({ keepExtensions: true }));
 	
-	app.use(badMiddleware)
+	//app.use(badMiddleware)
 	
 	app.use(express.methodOverride());
 	app.use(express.session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secret
