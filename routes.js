@@ -1,5 +1,7 @@
 var step = require('step');
 var mongodb = require('mongodb');
+var validator = require('validator')
+
 
 module.exports = function (app, passport) {
 
@@ -151,10 +153,46 @@ module.exports = function (app, passport) {
 		*/
 		
 		var data = {
-			'title' : req.body.title,
-			'author' : req.body.author,
-			'note' : req.body.note
+			'title' : validator.escape(req.body.title),
+			'author' : validator.escape(req.body.author),
+			'note' : validator.escape(req.body.note)
 		};
+		
+		if(!validator.isLength(data.title,1,50)){
+						
+			var retData = {
+				'Message' : "Title is mandatory, 50 chars max!"
+			};  
+			
+			res.writeHead(200, {"Content-Type": "application/json"});
+			var json = JSON.stringify(retData);
+			res.end(json);
+			return;
+		}
+		
+		if(!validator.isLength(data.author,0,50)){
+						
+			var retData = {
+				'Message' : "Author is 50 chars max!"
+			};  
+			
+			res.writeHead(200, {"Content-Type": "application/json"});
+			var json = JSON.stringify(retData);
+			res.end(json);
+			return;
+		}
+		
+		if(!validator.isLength(data.note,0,100)){
+						
+			var retData = {
+				'Message' : "Note is 100 chars max!"
+			};  
+			
+			res.writeHead(200, {"Content-Type": "application/json"});
+			var json = JSON.stringify(retData);
+			res.end(json);
+			return;
+		}
 		
 		step(
 
@@ -197,12 +235,59 @@ module.exports = function (app, passport) {
 	
 	app.post('/update_test', function (req, res) {
 
+	// ako u neko polje pošaljem '<script>alert("ds")</script>' onda mi se svejedno izvrši
+	// unatoè sanitizaciji, za razliku od update-a, nezna se zašto
 	
 		var server = new mongodb.Server('127.0.0.1', 27017, {});
 		var client = new mongodb.Db('find-script', server, {
 				w : 1
 			});
 
+		
+			var data = {
+				'title' : validator.escape(req.body.title),
+				'author' : validator.escape(req.body.author),
+				'note' : validator.escape(req.body.note)
+			};
+			
+			
+		if(!validator.isLength(data.title,1,50)){
+						
+			var retData = {
+				'Message' : "Title is mandatory, 50 chars max!"
+			};  
+			
+			res.writeHead(200, {"Content-Type": "application/json"});
+			var json = JSON.stringify(retData);
+			res.end(json);
+			return;
+		}
+		
+		if(!validator.isLength(data.author,0,50)){
+						
+			var retData = {
+				'Message' : "Author is 50 chars max!"
+			};  
+			
+			res.writeHead(200, {"Content-Type": "application/json"});
+			var json = JSON.stringify(retData);
+			res.end(json);
+			return;
+		}
+		
+		if(!validator.isLength(data.note,0,100)){
+						
+			var retData = {
+				'Message' : "Note is 100 chars max!"
+			};  
+			
+			res.writeHead(200, {"Content-Type": "application/json"});
+			var json = JSON.stringify(retData);
+			res.end(json);
+			return;
+		}
+			
+			
 		step(
 
 			function () {
@@ -214,11 +299,9 @@ module.exports = function (app, passport) {
 			function (err, collection) {
 			var ObjectID = mongodb.ObjectID;
 			var chosenId = new ObjectID(req.body._id);
-			var data = {
-				'title' : req.body.title,
-				'author' : req.body.author,
-				'note' : req.body.note
-			};
+			
+			
+			
 
 			collection.update({
 				_id : chosenId

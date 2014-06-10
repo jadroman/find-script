@@ -19,6 +19,7 @@
 		<link rel="stylesheet" href="../js/jquery-ui/css/ui-darkness/jquery-ui-1.10.4.custom.min.css">
         <!-- Modernizr -->
         <script src="../js/vendor/modernizr-2.6.2.min.js"></script>
+		<script type="text/javascript" src="js/validator.min.js"></script>
         <!-- Respond.js for IE 8 or less only -->
         <!--[if (lt IE 9) & (!IEMobile)]>
             <script src="js/vendor/respond.min.js"></script>
@@ -127,16 +128,19 @@
 				}
 			});
 			
+			
 			$('#LoadRecordsButton').click(function (e) {
 				e.preventDefault();
+				
 				$('#PersonTableContainer').jtable('load', {
-					note: $('#note').val(),
-					title: $('#title').val(),
-					author: $('#author').val()
+					note: validator.escape($('#note').val()),
+					title: validator.escape($('#title').val()),
+					author: validator.escape($('#author').val())
 				});
-        });
+			});
 			
 			$('#PersonTableContainer').jtable('load');
+			
 		});
 	</script>
     </body>
