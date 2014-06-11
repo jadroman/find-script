@@ -50,7 +50,9 @@ module.exports = function (app, passport) {
 		var client = new mongodb.Db('find-script', server, {
 				w : 1
 			});
-
+		
+		/*
+		
 		step(
 			function openDBConection() {
 			client.open(this);
@@ -59,36 +61,7 @@ module.exports = function (app, passport) {
 			client.collection("scripts", this);
 		},
 			function getAllDocumentsFromCollection(err, collection) {
-			/*
-			switch (sortParam) {
-			  case "note ASC":
-				collection.find().sort({'note':1}).skip(parseInt(req.query.jtStartIndex, 10)).limit(parseInt(req.query.jtPageSize, 10)).toArray(this);
-				break;
-			  case "note DESC":
-				collection.find().sort({'note':-1}).skip(parseInt(req.query.jtStartIndex, 10)).limit(parseInt(req.query.jtPageSize, 10)).toArray(this);
-				break;
-			  case "author ASC":
-				collection.find().sort({'author':1}).skip(parseInt(req.query.jtStartIndex, 10)).limit(parseInt(req.query.jtPageSize, 10)).toArray(this);
-				break;
-			  case "author DESC":
-				collection.find().sort({'author':-1}).skip(parseInt(req.query.jtStartIndex, 10)).limit(parseInt(req.query.jtPageSize, 10)).toArray(this);
-				break;
-			  case "title ASC":
-				collection.find().sort({'title':1}).skip(parseInt(req.query.jtStartIndex, 10)).limit(parseInt(req.query.jtPageSize, 10)).toArray(this);
-				break;
-			  case "title DESC":
-				collection.find().sort({'title':-1}).skip(parseInt(req.query.jtStartIndex, 10)).limit(parseInt(req.query.jtPageSize, 10)).toArray(this);
-				break;
-			  default:
-				collection.find().sort({'author':1}).skip(parseInt(req.query.jtStartIndex, 10)).limit(parseInt(req.query.jtPageSize, 10)).toArray(this);
-			}
-			*/
-			/*
-			var filterNoteWord = req.body.note;
-			var filterQuery = { note: filterNoteWord }
-			console.log(filterQuery)
-			*/
-			
+						
 			var filteredNote = {};
 			var filteredTitle = {};
 			var filteredAuthor = {};
@@ -104,32 +77,84 @@ module.exports = function (app, passport) {
 			if((typeof req.body.author != "undefined") && (req.body.author != "")){
 				filteredAuthor = { author: req.body.author };
 			}
-
-			console.log({ $or: [ filteredAuthor, filteredNote, filteredTitle]});
 			
-			
+						
+			var totalRecNum = 0;
+			collection.find().toArray(function(err, results) {
+				totalRecNum = results.length;
+			});
 			collection.find( { $and: [ filteredAuthor, filteredNote, filteredTitle]} ).sort(sortExpr).skip(parseInt(req.query.jtStartIndex, 10)).limit(parseInt(req.query.jtPageSize, 10)).toArray(this);
-			//{ $or: [ { author: 'fafa'}, {note: 'ridikul' }]}
-			
-			
+					
 		},
 			function displayAllScripts(err, results) {
 			if (err)
 				throw err;
-			
-			
+						
 			var data = {
 				'Result' : 'OK',
 				'Records': results,
-				'TotalRecordCount': results.length
+				'TotalRecordCount': totalRecNum
 			};  
-			  
 			
 		    res.writeHead(200, {"Content-Type": "application/json"});
 		    var json = JSON.stringify(data);
 		    res.end(json);
 		});
-
+		*/
+		
+		client.open(function(){
+			client.collection("scripts",function(err, collection){
+				
+				
+				
+			var filteredNote = {};
+			var filteredTitle = {};
+			var filteredAuthor = {};
+			
+			if((typeof req.body.note != "undefined") && (req.body.note != "")){
+				filteredNote = { note: req.body.note };
+			}
+			
+			if((typeof req.body.title != "undefined") && (req.body.title != "")){
+				filteredTitle = { title: req.body.title };
+			}
+			
+			if((typeof req.body.author != "undefined") && (req.body.author != "")){
+				filteredAuthor = { author: req.body.author };
+			}
+			
+			var totalRecNum = 0;
+			collection.find().toArray(function(err, results) {
+				totalRecNum = results.length;
+			});
+			
+			collection.find( { $and: [ filteredAuthor, filteredNote, filteredTitle]} ).sort(sortExpr).skip(parseInt(req.query.jtStartIndex, 10)).limit(parseInt(req.query.jtPageSize, 10)).toArray(function(err,results){
+				if (err)
+				throw err;
+						
+				var data = {
+					'Result' : 'OK',
+					'Records': results,
+					'TotalRecordCount': totalRecNum
+				};  
+				
+				res.writeHead(200, {"Content-Type": "application/json"});
+				var json = JSON.stringify(data);
+				res.end(json);
+			});
+				
+				
+				
+			});
+		}
+		
+		);
+		
+		
+		
+		
+		
+		
 	});
 	
 	app.post('/insert_test', function (req, res) {
