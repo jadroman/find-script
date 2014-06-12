@@ -10,12 +10,7 @@ var validator = require('validator')
 
 	});
 
-	app.post('/test', function (req, res) {
-
-		//console.log(req.body);
-		//console.log(req.query.jtSorting);
-
-		//console.log(req.query.jtSorting);
+	app.post('/GetScripts', function (req, res) {
 
 		var sortExpr = {
 			author : -1
@@ -64,57 +59,7 @@ var validator = require('validator')
 				w : 1
 			});
 
-		/*
-
-		step(
-		function openDBConection() {
-		client.open(this);
-		},
-		function getDBCollection(err) {
-		client.collection("scripts", this);
-		},
-		function getAllDocumentsFromCollection(err, collection) {
-
-		var filteredNote = {};
-		var filteredTitle = {};
-		var filteredAuthor = {};
-
-		if((typeof req.body.note != "undefined") && (req.body.note != "")){
-		filteredNote = { note: req.body.note };
-		}
-
-		if((typeof req.body.title != "undefined") && (req.body.title != "")){
-		filteredTitle = { title: req.body.title };
-		}
-
-		if((typeof req.body.author != "undefined") && (req.body.author != "")){
-		filteredAuthor = { author: req.body.author };
-		}
-
-
-		var totalRecNum = 0;
-		collection.find().toArray(function(err, results) {
-		totalRecNum = results.length;
-		});
-		collection.find( { $and: [ filteredAuthor, filteredNote, filteredTitle]} ).sort(sortExpr).skip(parseInt(req.query.jtStartIndex, 10)).limit(parseInt(req.query.jtPageSize, 10)).toArray(this);
-
-		},
-		function displayAllScripts(err, results) {
-		if (err)
-		throw err;
-
-		var data = {
-		'Result' : 'OK',
-		'Records': results,
-		'TotalRecordCount': totalRecNum
-		};
-
-		res.writeHead(200, {"Content-Type": "application/json"});
-		var json = JSON.stringify(data);
-		res.end(json);
-		});
-		 */
-
+		
 		client.open(function () {
 			client.collection("scripts", function (err, collection) {
 
@@ -124,19 +69,19 @@ var validator = require('validator')
 
 				if ((typeof req.body.note != "undefined") && (req.body.note != "")) {
 					filteredNote = {
-						note : req.body.note
+						note : { $regex: req.body.note }
 					};
 				}
 
 				if ((typeof req.body.title != "undefined") && (req.body.title != "")) {
 					filteredTitle = {
-						title : req.body.title
+						title : { $regex: req.body.title }
 					};
 				}
 
 				if ((typeof req.body.author != "undefined") && (req.body.author != "")) {
 					filteredAuthor = {
-						author : req.body.author
+						author : { $regex: req.body.author }
 					};
 				}
 
@@ -145,7 +90,12 @@ var validator = require('validator')
 					totalRecNum = results.length;
 
 					collection.find({
-						$and : [filteredAuthor, filteredNote, filteredTitle]
+						$and: [  filteredAuthor , filteredTitle, filteredNote ] 
+						//$and   : [filteredAuthor, filteredNote, filteredTitle]
+						//author: /filteredAuthor/
+						
+						//find( { $or: [ { quantity: { $lt: 20 } }, { price: 10 } ] } )
+						
 					}).sort(sortExpr).skip(parseInt(req.query.jtStartIndex, 10)).limit(parseInt(req.query.jtPageSize, 10)).toArray(function (err, results) {
 						if (err)
 							throw err;
@@ -164,52 +114,20 @@ var validator = require('validator')
 					});
 
 				});
-				/*
-				collection.find({
-				$and: [filteredAuthor, filteredNote, filteredTitle]
-				}).sort(sortExpr).skip(parseInt(req.query.jtStartIndex, 10)).limit(parseInt(req.query.jtPageSize, 10)).toArray(function (err, results) {
-				if (err)
-				throw err;
-
-				var data = {
-				'Result': 'OK',
-				'Records': results,
-				'TotalRecordCount': totalRecNum
-				};
-
-				res.writeHead(200, {
-				"Content-Type": "application/json"
-				});
-				var json = JSON.stringify(data);
-				res.end(json);
-				});
-				 */
-
+				
 			});
 		});
 
 	});
 
 	app.post('/insert_test', function (req, res) {
-		//console.log(req);
-
-
+		
 		var server = new mongodb.Server('127.0.0.1', 27017, {});
 		var client = new mongodb.Db('find-script', server, {
 				w : 1
 			});
 
-		//var bla = JSON.parse(req.body);
-		/*
-		var data = {
-		'Result' : 'OK',
-		'Record': {
-		'title' : req.body.title,
-		'author' : req.body.author,
-		'note' : req.body.note
-		}};
-		 */
-
+		
 		var data = {
 			'title' : validator.escape(req.body.title),
 			'author' : validator.escape(req.body.author),
@@ -288,13 +206,12 @@ var validator = require('validator')
 		var json = JSON.stringify(retData);
 		res.end(json);
 
-		//res.redirect('/list');
 	});
 
-	app.post('/update_test', function (req, res) {
+	app.post('/updateScript', function (req, res) {
 
 		// ako u neko polje pošaljem '<script>alert("ds")</script>' onda mi se svejedno izvrši
-		// unatoè sanitizaciji, za razliku od update-a, nezna se zašto
+		// unatoè sanitizaciji, za razliku od update-a, neznam zašto
 
 		var server = new mongodb.Server('127.0.0.1', 27017, {});
 		var client = new mongodb.Db('find-script', server, {
@@ -387,7 +304,7 @@ var validator = require('validator')
 
 	});
 
-	app.post('/delete_test', function (req, res) {
+	app.post('/deleteScript', function (req, res) {
 
 		var server = new mongodb.Server('127.0.0.1', 27017, {});
 		var client = new mongodb.Db('find-script', server, {
@@ -472,14 +389,14 @@ var validator = require('validator')
 
 	});
 
-	app.get('/insert_record', function (req, res) {
+	app.get('/insertScript', function (req, res) {
 		res.render('insert.jade', {
 			layout : false,
 			'title' : 'Monode-crud'
 		});
 	})
 
-	app.post('/insert_record', function (req, res) {
+	app.post('/insertScript', function (req, res) {
 
 		var server = new mongodb.Server('127.0.0.1', 27017, {});
 		var client = new mongodb.Db('find-script', server, {
@@ -509,7 +426,7 @@ var validator = require('validator')
 		res.redirect('/script-list');
 	});
 
-	app.get('/update_record/:id', function (req, res) {
+	app.get('/updateScript/:id', function (req, res) {
 
 		var server = new mongodb.Server('127.0.0.1', 27017, {});
 		var client = new mongodb.Db('find-script', server, {
@@ -542,7 +459,7 @@ var validator = require('validator')
 
 	});
 
-	app.post('/update_record', function (req, res) {
+	app.post('/updateScript', function (req, res) {
 
 		var server = new mongodb.Server('127.0.0.1', 27017, {});
 		var client = new mongodb.Db('find-script', server, {
@@ -584,7 +501,7 @@ var validator = require('validator')
 
 	});
 
-	app.get('/delete_record/:id', function (req, res) {
+	app.get('/deleteScript/:id', function (req, res) {
 
 		var server = new mongodb.Server('127.0.0.1', 27017, {});
 		var client = new mongodb.Db('find-script', server, {
@@ -618,7 +535,6 @@ var validator = require('validator')
 	});
 
 	app.get('*', function (req, res) {
-
 		res.render('404.ejs', {});
 	});
 
