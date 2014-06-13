@@ -4,7 +4,7 @@ var winston = require('winston');
 var logger = new (winston.Logger)({
 transports: [
     new(winston.transports.MongoDB)({
-            db : 'logs',
+            db : 'find-script',
             host : 'localhost',
 			collection: 'erorrs', 
 			port: '27017'
