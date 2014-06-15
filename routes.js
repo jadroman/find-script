@@ -69,19 +69,19 @@ var validator = require('validator')
 
 				if ((typeof req.body.note != "undefined") && (req.body.note != "")) {
 					filteredNote = {
-						note : { $regex: req.body.note }
+						note : { $regex: req.body.note, "$options": "i"  }
 					};
 				}
 
 				if ((typeof req.body.title != "undefined") && (req.body.title != "")) {
 					filteredTitle = {
-						title : { $regex: req.body.title }
+						title : { $regex: req.body.title, "$options": "i"  }
 					};
 				}
 
 				if ((typeof req.body.author != "undefined") && (req.body.author != "")) {
 					filteredAuthor = {
-						author : { $regex: req.body.author }
+						author : { $regex: req.body.author, "$options": "i" }
 					};
 				}
 
@@ -120,7 +120,7 @@ var validator = require('validator')
 
 	});
 
-	app.post('/insert_test', function (req, res) {
+	app.post('/insertScript', function (req, res) {
 		
 		var server = new mongodb.Server('127.0.0.1', 27017, {});
 		var client = new mongodb.Db('find-script', server, {
@@ -366,15 +366,22 @@ var validator = require('validator')
 		var client = new mongodb.Db('find-script', server, {
 				w : 1
 			});
-
+			
+		
+				
 		step(
 			function openDBConection() {
 			client.open(this);
 		},
 			function getDBCollection(err) {
+			if (err)
+				throw err;
 			client.collection("scripts", this);
+			
 		},
 			function getAllDocumentsFromCollection(err, collection) {
+			if (err)
+				throw err;
 			collection.find().toArray(this);
 		},
 			function displayAllScripts(err, results) {
