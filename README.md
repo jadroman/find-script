@@ -8,7 +8,7 @@ What is this?
 Simple node.js CRUD experimental application.
 
 
-What is been utilized?
+What is utilized?
 -------------------
 
 *	Express  (http://expressjs.com/)
@@ -34,7 +34,7 @@ How to run?
 *	Recreate database 
     (Run 'mongorestore' command. Database dump is in '~/doc/DB BCKP')
 *	Install Node.js and NPM (Node package manager)
-*	Run 'npm install' command to install all node.js modules (dependencies )
+*	Run 'npm install' command to install all node.js modules (dependencies)
 *	Credentials: 
 	*	username: 'admin' 
 	*	password: 'x12345'
