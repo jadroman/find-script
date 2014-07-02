@@ -1,3 +1,0 @@
-- mongo export/import
-	mongodump -d <our database name> -o <directory_backup>
-	mongorestore folder/<our database name>

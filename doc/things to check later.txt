@@ -1,1 +1,0 @@
-- timestamp u mongodb-u je krivi
