@@ -7,6 +7,8 @@ What is this?
 
 Simple node.js CRUD experimental application.
 
+![screenshot](img/screen1.png "screenshot")
+
 
 What is utilized?
 -------------------
